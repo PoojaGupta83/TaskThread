@@ -1,33 +1,44 @@
-package Threadtask;
+package NewTask;
 
-import java.util.LinkedList;
 import java.util.Queue;
 
-class Consumer extends Thread {
-	private CP cp;
+class Consumer implements Runnable {
+	Queue<Character> queue = null;
+	final int size = 5;
 
-	public Consumer(CP c) {
-		cp = c;
-
+	public Consumer(Queue<Character> queue) {
+		super();
+		this.queue = queue;
 	}
 
 	public void run() {
-		String str = "Hello";
-		Queue<Character> queue = new LinkedList<Character>();
+		while (true) {
+			try {
+				get();
 
-		for (int i = 0; i < str.length(); i++) {
-			queue.add(str.charAt(i));
+			} catch (Exception e) {
+				System.out.println(e);
+
+			}
 		}
-		Character str3;
-		
-		while (queue.peek() != null) {
-			str3 = queue.remove();
-			
-		    System.out.println("Consumer Thread #" + " remove value "+str3+" "+ "from: " + "Queue=" + queue);
+	}
+
+	public void get() throws Exception {
+		synchronized (queue) {
+			while (queue.isEmpty()) {
+				System.out.println("Consumer thread is empty waiting for publisher to put value");
+				queue.wait();
+			}
+
+			Character str3;
+			while (queue.peek() != null) {
+				str3 = queue.remove();
+				System.out.println("Consumer Thread " + " remove value " + str3 + " " + "from: " + "Queue=" + queue);
+			}
 		}
-		try {
-			sleep(1000);
-		} catch (Exception e) {
-		}
+
+		Thread.sleep(1000);
+		queue.notify();
+
 	}
 }
