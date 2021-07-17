@@ -7,3 +7,5 @@ Consumer Thread  remove value e from: Queue=[l, l, o]
 Consumer Thread  remove value l from: Queue=[l, o]
 Consumer Thread  remove value l from: Queue=[o]
 Consumer Thread  remove value o from: Queue=[]
+Consumer thread is empty waiting for publisher to put value
+
